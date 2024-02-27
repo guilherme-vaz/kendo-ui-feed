@@ -1,35 +1,109 @@
-// src/components/Feed.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Grid, GridColumn } from '@progress/kendo-react-grid';
-import axios from 'axios';
+import { process } from "@progress/kendo-data-query";
+import { MoviesContext } from '../../Context/movies';
+import noImg from '../../assets/imgs/no-img.jpg';
 
-// const OMDB_API_KEY = process.env.OMDB_API_KEY;
-// const OMDB_API_KEY = process.env.
-// const cu = process.env.
+
+const initialFilter = {
+    logic: "and",
+    filters: [
+        {
+            field: "originalTitleText.text",
+            operator: "contains",
+            value: "",
+        },
+    ],
+};
+
+const initialSort = [
+    {
+        field: "originalTitleText.text",
+        dir: "asc",
+    },
+];
+
+
+const initialDataState = {
+    skip: 0,
+    take: 10,
+};
+
 
 const Feed = () => {
-    const [movies, setMovies] = useState([]);
+    const { movies } = useContext(MoviesContext);
+    const [filter, setFilter] = useState(initialFilter);
+    const [sort, setSort] = useState(initialSort);
+    const [page, setPage] = useState(initialDataState);
+    const [pageSizeValue, setPageSizeValue] = useState();
+    const processedData = process(movies, {
+        filter: filter,
+        sort: sort,
+        skip: page.skip,
+        take: page.take,
+    });
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`http://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=warner`);
-                setMovies(response.data.Search || []);
-            } catch (error) {
-                console.error('Erro ao buscar dados da API OMDB:', error.message);
-            }
-        };
-
-        fetchData();
-    }, []);
+    const pageChange = (event) => {
+        const targetEvent = event.targetEvent;
+        const take = targetEvent.value === "All" ? movies.length : event.page.take;
+        if (targetEvent.value) { setPageSizeValue(targetEvent.value) }
+        setPage({ ...event.page, take, });
+    };
 
 
     return (
-        <Grid data={movies}>
-            <GridColumn field="Title" title="Título" filterable={true} />
-            <GridColumn field="Year" title="Ano" filterable={true} />
-            <GridColumn field="Type" title="Tipo" filterable={true} />
-        </Grid>
+        <>
+            <Grid
+                style={{
+                    height: "fit-content",
+                }}
+                data={processedData}
+                filterable={true}
+                filter={filter}
+                onFilterChange={(e) => setFilter(e.filter)}
+                sortable={true}
+                sort={sort}
+                onSortChange={(e) => {
+                    setSort(e.sort);
+                }}
+                total={movies.length}
+                pageable={{
+                    buttonCount: 5,
+                    pageSizes: [5, 10, 15, "All"],
+                    pageSizeValue: pageSizeValue,
+                }}
+                onPageChange={pageChange}
+
+            >
+                <GridColumn
+                    field="primaryImage.url"
+                    title="Poster"
+                    filterable={false}
+                    width="100px"
+                    cell={(props) => (
+                        <td>
+                            {props.dataItem.primaryImage && props.dataItem.primaryImage.url !== null ? (
+                                <img
+                                    src={props.dataItem.primaryImage.url}
+                                    alt="Poster do filme"
+                                    style={{ width: '70px', height: '90px', margin: '0 auto', display: 'block' }}
+                                />
+                            ) : (
+                                <img
+                                    src={noImg}
+                                    alt="Poster não encontrado"
+                                    style={{ width: '70px', height: '90px', margin: '0 auto', display: 'block' }}
+                                />
+                            )}
+                        </td>
+                    )}
+                />
+                <GridColumn field="originalTitleText.text" title="Título" filter="text"/>
+                <GridColumn field="releaseYear.year" title="Ano" filter="date" />
+                <GridColumn field="titleType.text" title="Tipo" filterable={false}/>
+            </Grid>
+        </>
+
     );
 };
 

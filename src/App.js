@@ -1,17 +1,16 @@
 import React from 'react';
 import './App.css';
-import { Calendar } from "@progress/kendo-react-dateinputs";
-import { Grid, GridColumn } from "@progress/kendo-react-grid";
-import products from "./products.json";
 import Feed from './components/Feed';
-
+import { MoviesProvider } from './Context/movies';
 function App() {
 
   return (
-    <div className="App">
-      <h1>Hello KendoReact!</h1>
-      <Feed />
-    </div>
+    <MoviesProvider>
+      <div className="App">
+        <h1>Kendo UI Feed</h1>
+        <Feed />
+      </div>
+    </MoviesProvider>
   );
 }
 
