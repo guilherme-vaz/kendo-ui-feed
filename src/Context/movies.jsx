@@ -16,7 +16,8 @@ export const MoviesProvider = ({ children }) => {
                 url: 'https://moviesdatabase.p.rapidapi.com/titles',
                 params: {
                     limit: '50',
-                    titleType: 'movie'
+                    titleType: 'movie',
+                    startYear: '2020'
                 },
                 headers: {
                     'X-RapidAPI-Key': API_KEY,

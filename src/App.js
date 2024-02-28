@@ -7,7 +7,6 @@ function App() {
   return (
     <MoviesProvider>
       <div className="App">
-        <h1>Kendo UI Feed</h1>
         <Feed />
       </div>
     </MoviesProvider>
