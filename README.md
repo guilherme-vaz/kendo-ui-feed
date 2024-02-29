@@ -21,7 +21,7 @@ $ npm install
 # acione o projeto
 $ npm run start
 ````
-<p><small>Caso não consiga gerar uma chave de API vá no diretório do projeto e entre na pasta Context > movies.jsx. <br/> Adicione minha chave diretamente na variável API_KEY. <br/><strong>4543a5339emsh8b8fd328b366100p1f396ejsn6ef66105fa35</strong></small></p>
+<p><small>Caso não consiga gerar uma chave de API vá no diretório do projeto e entre na pasta Context > movies.jsx. <br/> Adicione minha chave diretamente na variável API_KEY. <br/>Chave: <strong>4543a5339emsh8b8fd328b366100p1f396ejsn6ef66105fa35</strong></small></p>
 
 
 
