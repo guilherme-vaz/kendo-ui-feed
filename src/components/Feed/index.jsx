@@ -54,7 +54,6 @@ const Feed = () => {
         setPage({ ...event.page, take, });
     };
 
-    console.log(movies)
 
     return (
         <>

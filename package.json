@@ -50,7 +50,6 @@
     "@progress/kendo-theme-bootstrap": "^7.2.0",
     "@progress/kendo-theme-default": "^7.2.0",
     "@progress/kendo-theme-material": "^7.2.0",
-    "@testing-library/react": "^14.2.1",
     "@testing-library/user-event": "^14.5.2",
     "axios": "^1.6.7",
     "react": "^18.2.0",
@@ -83,7 +82,17 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.24.0",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@testing-library/jest-dom": "^6.4.2"
+    "@babel/preset-env": "^7.24.0",
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^14.2.1",
+    "babel-jest": "^29.7.0"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    }
   }
+  
 }
